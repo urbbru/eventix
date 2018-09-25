@@ -5,6 +5,41 @@
   margin:25px auto;
 }
 
+.align-center {
+  text-align: center;
+}
+
+#header {
+
+}
+
+#content {
+  margin: 5% auto;
+}
+
+.pagination {
+  margin: 2% auto;
+  text-align: center;
+}
+
+.login-form {
+  margin: 0 auto !important;
+  max-width: 280px;
+}
+.login-form-forgot {
+  float: left;
+}
+.register-now {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+
+.login-btn {
+  margin-left:2%;
+}
+
 /* #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;
