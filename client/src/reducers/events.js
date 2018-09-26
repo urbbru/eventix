@@ -1,3 +1,15 @@
+import { EVENTS_FETCHED, EVENT_CREATE_SUCCESS } from '../actions/events'
+
 export default (state = [], action = {}) => {
-    return state
+      switch (action.type) {
+          case EVENTS_FETCHED:
+            return [...action.events]
+
+          case EVENT_CREATE_SUCCESS:
+            return [...action.event]
+
+          default:
+            return state
+        }
   }
+  

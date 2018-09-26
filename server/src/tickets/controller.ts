@@ -10,6 +10,15 @@ export default class TicketController {
        return { tickets }
     }
 
+    // @Authorized()
+    @Get('/tickets/:id')
+    async getTicket(
+      @Param('id') id: number
+    ) {
+      const ticket = await Ticket.findOne(id, {relations: ['user', 'event', 'comments']})
+      return ticket
+    }
+
     @Post('/tickets')
     @HttpCode(201)
     createTicket(

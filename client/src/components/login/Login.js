@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {connect} from 'react-redux'
-import Login from './Login'
+import {login} from '../../actions/users'
+import {Redirect} from 'react-router-dom'
 
 import { Form, Icon, Input, Button, Checkbox, Col } from 'antd';
 
@@ -12,21 +13,24 @@ class LoginContainer extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.props.login(values.email, values.password)
       }
     });
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    if (this.props.currentUser) return (
+			<Redirect to="/" />
+		)
     return (
       <Col xs={{ span: 22, offset: 1 }}>
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          {getFieldDecorator('userName', {
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your username!' }],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username or Email" />
+            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
           )}
         </FormItem>
         <FormItem>
@@ -39,7 +43,7 @@ class LoginContainer extends React.Component {
         <FormItem>
           
           <a className="login-form-forgot" href="">Forgot password</a>
-          <span className="register-now">Or <a href="">register now!</a></span>
+          <span className="register-now">Or <Link to={"/signup"}>register now!</Link></span>
 
           <Button type="primary" htmlType="submit" className="login-form-button">
             Log in
@@ -54,6 +58,6 @@ class LoginContainer extends React.Component {
 
 const WrappedLogin = Form.create()(LoginContainer)
 
-const mapStateToProps = ({events}) => ({events})
+const mapStateToProps = ({currentUser}) => ({currentUser})
 
-export default connect(mapStateToProps)(WrappedLogin)
+export default connect(mapStateToProps, {login})(WrappedLogin)

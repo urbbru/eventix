@@ -20,11 +20,14 @@ export default class User extends BaseEntity {
     message: "name is too short"
   })
   @Column('text', {nullable:false})
-  name: string
+  userName: string
 
   @IsEmail()
   @Column('text', {nullable:false})
   email: string
+
+  @Column('boolean', {default:false, nullable:false})
+  admin: string
 
   @IsString()
   @MinLength(8)

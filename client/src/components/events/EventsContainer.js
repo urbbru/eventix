@@ -1,14 +1,23 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {connect} from 'react-redux'
+import {loadEvents} from '../../actions/events'
 import Events from './Events'
 
-class HangmanContainer extends React.PureComponent {
+class EventsContainer extends React.PureComponent {
+  componentDidMount() {
+    this.props.loadEvents()
+  }
+  
   render() {
-     return <Events />
+    if(this.props.events.length === 0) return '..Loading'
+    return <Events events={this.props.events} authenticated={this.props.authenticated}/>
   }
 }
 
-const mapStateToProps = ({events}) => ({events})
+const mapStateToProps = state => ({
+  authenticated: state.currentUser !== null,
+  events: state.events
+})
 
-export default connect(mapStateToProps)(HangmanContainer)
+export default connect(mapStateToProps, {loadEvents})(EventsContainer)
+

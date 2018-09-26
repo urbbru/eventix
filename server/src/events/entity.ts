@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm'
 import { BaseEntity } from 'typeorm/repository/BaseEntity'
-import { IsString, Length } from 'class-validator'
+import { IsString, IsNumber, Length } from 'class-validator'
 import User from '../users/entity';
 import Ticket from '../tickets/entity'
 
@@ -22,6 +22,10 @@ export default class Event extends BaseEntity {
   @Column('text', {nullable:false})
   picture: string
   
+  @IsNumber()
+  @Column('int', {nullable:false})
+  price: number
+
   @Column('timestamp', {nullable:false})
   startDate: string
 

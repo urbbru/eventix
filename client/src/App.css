@@ -18,7 +18,7 @@
 }
 
 .pagination {
-  margin: 2% auto;
+  margin: 5% auto 2% auto;
   text-align: center;
 }
 
@@ -38,6 +38,23 @@
 
 .login-btn {
   margin-left:2%;
+}
+
+.title {
+  margin:4% auto 2% auto;
+}
+
+.back-btn {
+  margin-bottom:2%;
+}
+
+.ticket-card {
+  display:inline-block;
+  margin: 5% !important;
+}
+
+.ticket-card:first-child {
+  margin-left: 0%;
 }
 
 /* #components-layout-demo-fixed .logo {

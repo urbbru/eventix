@@ -1,15 +1,27 @@
 import {JsonController, Get, Post, Put, Body, Param, HttpCode, NotFoundError} from 'routing-controllers'
 import Event from './entity';
+// import Ticket from '../tickets/entity';
 
 @JsonController()
 export default class EventController {
 
+    // @Authorized()
     @Get('/events')
     allEvents = async () => {
        const events = await Event.find()
        return { events }
     }
 
+    // @Authorized()
+    @Get('/events/:id')
+    async getEvent(
+      @Param('id') id: number
+    ) {
+      const event = await Event.findOne(id, {relations: ['tickets']})
+      return event
+    }
+
+    // @Authorized()
     @Post('/events')
     @HttpCode(201)
     createEvent(
@@ -18,6 +30,7 @@ export default class EventController {
       return event.save()
     }
 
+    // @Authorized()
     @Put('/events/:id')
     async updateEvent(
       @Param('id') id: number,
