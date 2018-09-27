@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {signup} from '../../actions/users'
 import {connect} from 'react-redux'
 import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
 
@@ -17,7 +18,7 @@ class Signup extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.props.signup(values.username, values.email, values.password)
       }
     });
   }
@@ -136,7 +137,7 @@ class Signup extends React.Component {
             </span>
           )}
         >
-          {getFieldDecorator('nickname', {
+          {getFieldDecorator('username', {
             rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
           })(
             <Input />
@@ -180,4 +181,4 @@ const WrappedSignup = Form.create()(Signup);
 
 const mapStateToProps = ({events}) => ({events})
 
-export default connect(mapStateToProps)(WrappedSignup)
+export default connect(mapStateToProps, {signup})(WrappedSignup)

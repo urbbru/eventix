@@ -34,10 +34,6 @@ export default function Events(props) {
                     </Col>
                 )
             })}
-
-                <Col xs={{ span: 22, offset: 1 }} className="pagination">
-                    <Pagination defaultCurrent={6} total={500} />
-                </Col>
         </div>
     )  
 }

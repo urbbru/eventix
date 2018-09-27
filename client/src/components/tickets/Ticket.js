@@ -1,30 +1,16 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Col, Button, Card, List, Avatar, Icon, Tooltip } from 'antd'
-
-const data = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
+import CreateComment from '../comments/CreateComment'
+import {fraudCalculator} from '../../constants'
 
 export default function Ticket(props) {
-    console.log(props)
     const IconText = ({ type, text }) => {
         if(type === "check"){ 
         return  <span>
                     <Tooltip title="Chance of fraud">
                     <Icon type={type} style={{ marginRight: 8 }} />
-                    {text}
+                    {fraudCalculator(props.ticket, props.tickets, props.event)}
                     </Tooltip>
                 </span>
         } else {
@@ -33,10 +19,6 @@ export default function Ticket(props) {
                         {text}
                     </span>
         }
-    }
-    const extraOptions = () => {
-        if(!props.authenticated) return
-        return [<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]
     }
     return (
         <div>
@@ -55,15 +37,23 @@ export default function Ticket(props) {
                                 >
                                     <List.Item.Meta
                                     avatar={<Avatar src={"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"} />}
-                                    title={`Posted by ${props.ticket.user.userName}`}
+                                    title={`Posted by ${props.ticket.user.userName}, contact: ${props.ticket.user.email}`}
                                     description={`$ ${props.ticket.price}`}
                                     />
                                     {props.ticket.description}
+
                             </List.Item>
                         </List>
                     </Card>
                     </Col>
-                    <Col xs={{ span: 22, offset: 1 }} lg={{ span: 12 }}>
+                    <Col xs={{ span: 22, offset: 1 }} lg={{ span: 11 }}>
+
+                    <h1 className="title">Add comment</h1>
+
+                        <CreateComment ticketId={props.ticket.id} createComment={props.createComment}/>
+
+                    </Col>
+                    <Col xs={{ span: 22, offset: 1 }} lg={{ span: 11 }}>
 
                         <h1 className="title">Comments</h1>
 

@@ -10,12 +10,13 @@ class EventsContainer extends React.PureComponent {
   
   render() {
     if(Object.keys(this.props.event).length === 0) return '..Loading'
-    return <Event event={this.props.event} authenticated={this.props.authenticated}/>
+    return <Event event={this.props.event} authenticated={this.props.authenticated} currentUser={this.props.currentUser}/>
   }
 }
 
 const mapStateToProps = state => ({
   authenticated: state.currentUser !== null,
+  currentUser: state.currentUser,
   event: state.event
 })
 

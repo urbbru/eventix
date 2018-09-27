@@ -1,12 +1,9 @@
-import { TICKET_FETCHED, TICKET_CREATE_SUCCESS } from '../actions/tickets'
+import { TICKETS_FETCHED } from '../actions/tickets'
 
 export default (state = {}, action = {}) => {
       switch (action.type) {
-          case TICKET_FETCHED:
-            return {...action.ticket}
-
-          case TICKET_CREATE_SUCCESS:
-            return [...action.ticket]
+          case TICKETS_FETCHED:
+            return {...action.tickets}
 
           default:
             return state

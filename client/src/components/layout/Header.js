@@ -23,13 +23,10 @@ class Header extends React.PureComponent {
             return (
                 
                 <SubMenu style={{float: 'right'}} title={<span><Icon type="setting" />{this.props.user.info.userName}</span>}>
-                    <MenuItemGroup title="Item 1">
-                    <Menu.Item key="createEvent">Create Event</Menu.Item>
-                    <Menu.Item key="createTicket">Create Ticket</Menu.Item>
-                    </MenuItemGroup>
-                    <MenuItemGroup title="Item 2">
-                    <Menu.Item key="setting:3">Option 3</Menu.Item>
-                    <Menu.Item key="setting:4">Option 4</Menu.Item>
+                    <MenuItemGroup title="Actions">
+                    <Menu.Item key="createEvent"><Link to={"/events/create"}>Create Event</Link></Menu.Item>
+                    <Menu.Item key="createTicket"><Link to={"/tickets/create"}>Create Ticket</Link></Menu.Item>
+                    <Menu.Item key="Logout"><Link to={"/logout"}>Log out</Link></Menu.Item>
                     </MenuItemGroup>
                 </SubMenu>
      

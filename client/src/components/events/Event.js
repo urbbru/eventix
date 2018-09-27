@@ -6,19 +6,18 @@ const TabPane = Tabs.TabPane
 const { Meta } = Card
 
 export default function Event(props) {
-    const extraOptions = () => {
-        if(!props.authenticated) return
-        return [<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]
-    }
+    console.log(props)
     const showTickets = () => {
         if(props.event.tickets.length === 0) return "No tickets for this event yet"
         return props.event.tickets.map(ticket => {
+            let extraOptions = [<Icon type="setting" />, <Link to={`/tickets/${ticket.id}/edit`}><Icon type="edit" /></Link>, <Icon type="ellipsis" />]
+            if(!props.authenticated || ticket.user.id !== props.currentUser.info.id) extraOptions = []
             return (
                 <Card
                     className="ticket-card"
                     style={{ width: 300 }}
                     cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-                    actions={extraOptions()}
+                    actions={extraOptions}
                 >
                     <Meta
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}

@@ -57,6 +57,10 @@
   margin-left: 0%;
 }
 
+.comment-form .ant-form-item-label {
+  text-align: left !important;
+}
+
 /* #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;

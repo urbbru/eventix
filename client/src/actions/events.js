@@ -26,9 +26,10 @@ const eventDeleteSuccess = event => ({
   event
 })
 
-export const loadEvents = () => (dispatch, getState) => {
+export const loadEvents = (skip, take) => (dispatch, getState) => {
   if (getState().events.length > 0) return
   request(`${baseUrl}/events`)
+  .query({ skip, take })
     .then(response => {
       dispatch(eventsFetched(response.body))
     })
@@ -47,12 +48,21 @@ export const loadEvent = (eventId) => (dispatch, getState) => {
   
 }
 
-export const createEvent = (data) => dispatch => {
-  // const jwt = getState().currentUser.jwt
-    // .set('Authorization', `Bearer ${jwt}`)
+export const createEvent = (data) => (dispatch, getState) => {
+  const jwt = getState().currentUser.jwt
+  const event = {
+      name: data.name,
+      description: data.description,
+      picture: data.picture,
+      price: data.price,
+      startDate: data.dates[0], 
+      endDate: data.dates[1]
+  }
+
   request
     .post(`${baseUrl}/events`)
-    .send(data)
+    .set('Authorization', `Bearer ${jwt}`)
+    .send(event)
     .then(response => {
       dispatch(eventCreateSuccess(response.body))
     })
