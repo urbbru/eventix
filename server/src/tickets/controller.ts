@@ -1,5 +1,7 @@
-import {JsonController, Get, Post, Put, Body, Param, HttpCode, NotFoundError} from 'routing-controllers'
+import {JsonController, Get, Post, Put, Body, Param, Authorized, CurrentUser, HttpCode, BadRequestError, NotFoundError} from 'routing-controllers'
 import Ticket from './entity';
+import Comment from '../comments/entity';
+import User from '../users/entity';
 
 @JsonController()
 export default class TicketController {
@@ -10,23 +12,32 @@ export default class TicketController {
        return { tickets }
     }
 
-    // @Authorized()
     @Get('/tickets/:id')
     async getTicket(
       @Param('id') id: number
     ) {
-      const ticket = await Ticket.findOne(id, {relations: ['user', 'event', 'comments']})
+      const ticket = await Ticket.findOne(id, {relations: ['event', 'comments']})
       return ticket
     }
 
-    @Post('/tickets')
+    @Authorized()
+    @Post('/tickets/:id/comments')
     @HttpCode(201)
-    createTicket(
-      @Body() ticket: Ticket
+    async createTicket(
+      @CurrentUser() user: User,
+      @Param('id') ticketId: number,
+      @Body() comment: Comment
     ) {
-      return ticket.save()
+      const ticket = await Ticket.findOne(ticketId)
+      if (!ticket) throw new BadRequestError(`Game does not exist`)
+
+      const entity = await comment.save()
+      entity.user = user
+      entity.ticket = ticket
+      return entity.save()
     }
 
+    @Authorized()
     @Put('/tickets/:id')
     async updateTicket(
       @Param('id') id: number,

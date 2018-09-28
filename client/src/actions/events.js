@@ -26,14 +26,22 @@ const eventDeleteSuccess = event => ({
   event
 })
 
-export const loadEvents = (skip, take) => (dispatch, getState) => {
-  if (getState().events.length > 0) return
-  request(`${baseUrl}/events`)
-  .query({ skip, take })
-    .then(response => {
-      dispatch(eventsFetched(response.body))
-    })
-    .catch(console.error)
+export const loadEvents = (skip, take) => (dispatch) => {
+  // if (getState().events.length > 0) return
+  if(skip === undefined && take === undefined) {
+    request(`${baseUrl}/events`)
+      .then(response => {
+        return response.body
+      })
+      .catch(console.error)
+  } else {
+    request(`${baseUrl}/events`)
+      .query({ skip, take })
+      .then(response => {
+        dispatch(eventsFetched(response.body))
+      })
+      .catch(console.error)
+  }
 }
 
 export const loadEvent = (eventId) => (dispatch, getState) => {

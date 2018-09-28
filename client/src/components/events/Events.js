@@ -17,11 +17,12 @@ export default function Events(props) {
     }
     return (
         <div>
+            <h1 className="align-center">Events coming up</h1>
             {props.events.map(event => {
                 return (
                     <Col xs={{ span: 22, offset: 1 }} lg={{ span: 8, offset:0 }}>
                     <Card
-                        style={{ width: 280, margin:'0 auto' }}
+                        className="event-card"
                         cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
                         actions={extraOptions()}
                     >

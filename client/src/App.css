@@ -61,6 +61,11 @@
   text-align: left !important;
 }
 
+.event-card {
+  width: 280px;
+  margin: 10% auto 0 auto !important; 
+}
+
 /* #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;

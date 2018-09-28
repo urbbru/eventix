@@ -8,6 +8,7 @@ import CommentController from "./comments/controller"
 import LoginController from "./logins/controller"
 import {Action} from 'routing-controllers'
 import { verify } from './jwt'
+import User from './users/entity'
 
 const port = process.env.PORT || 4000
 
@@ -29,6 +30,18 @@ const app = createKoaServer({
       }
       // ...
       return false
+    },
+    currentUserChecker: async (action: Action) => {
+      const header: string = action.request.headers.authorization
+      if (header && header.startsWith('Bearer ')) {
+        const [ , token ] = header.split(' ')
+        
+        if (token) {
+          const {data} = verify(token)
+          return User.findOne(data.id)
+        }
+      }
+      return undefined
     }
 })
 

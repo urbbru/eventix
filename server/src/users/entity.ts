@@ -4,8 +4,8 @@ import { BaseEntity } from 'typeorm/repository/BaseEntity';
 import { IsString, MinLength, IsEmail } from 'class-validator';
 import { Exclude } from 'class-transformer';
 import Event from '../events/entity';
-import Ticket from '../events/entity';
-import Comment from '../events/entity';
+import Ticket from '../tickets/entity';
+import Comment from '../comments/entity';
 // import * as bcrypt from 'bcrypt' <-- not working giving weird error
 const bcrypt = require('bcryptjs');
 

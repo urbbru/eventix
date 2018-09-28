@@ -1,5 +1,5 @@
 // src/users/controller.ts
-import { JsonController, Get, Post, Put, Param, Body, NotFoundError } from 'routing-controllers'
+import { JsonController, Get, Post, Put, Param, Body, NotFoundError, Authorized } from 'routing-controllers'
 import User from './entity'
 
 @JsonController()
@@ -11,11 +11,20 @@ export default class UserController {
     return { users }
     }
 
+    @Authorized()
     @Get('/users/:id')
     getUser(
     @Param('id') id: number
     ) {
     return User.findOne(id)
+    }
+
+    @Get('/users/:id/tickets')
+    async getAllTicketsOfUser(
+      @Param('id') userId: number,
+    ) {
+        const user = await User.findOne(userId, {relations: ['tickets']})
+        return user
     }
 
     @Put('/users/:id')
