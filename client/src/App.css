@@ -17,6 +17,16 @@
   margin: 5% auto;
 }
 
+.red {
+  color:red;
+}
+.yellow {
+  color:yellow;
+}
+.green {
+  color:green;
+}
+
 .pagination {
   margin: 5% auto 2% auto;
   text-align: center;

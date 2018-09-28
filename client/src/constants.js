@@ -2,6 +2,12 @@ export const baseUrl = process.env.REACT_APP_APIURL || 'http://localhost:4000'
 
 export const localStorageJwtKey = 'currentUserJwt'
 
+export const giveColor = (fraudPercentage) => {
+    if(fraudPercentage <= 33) return "green"
+    if(fraudPercentage >= 33 && fraudPercentage <= 66) return "yellow"
+    if(fraudPercentage >= 67) return "red"
+}
+
 export const fraudCalculator = (ticket, tickets, event) => {
     if(Object.keys(tickets).length === 0 || Object.keys(event).length === 0) { 
         return "..Loading"

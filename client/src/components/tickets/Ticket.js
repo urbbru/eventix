@@ -2,12 +2,12 @@ import * as React from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Col, Button, Card, List, Avatar, Icon, Tooltip } from 'antd'
 import CreateComment from '../comments/CreateComment'
-import {fraudCalculator} from '../../constants'
+import {fraudCalculator, giveColor} from '../../constants'
 
 export default function Ticket(props) {
     const IconText = ({ type, text }) => {
         if(type === "check"){ 
-        return  <span>
+        return  <span className={giveColor(fraudCalculator(props.ticket, props.tickets, props.event))}>
                     <Tooltip title="Chance of fraud">
                     <Icon type={type} style={{ marginRight: 8 }} />
                     {fraudCalculator(props.ticket, props.tickets, props.event)}
