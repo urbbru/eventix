@@ -76,6 +76,14 @@
   margin: 10% auto 0 auto !important; 
 }
 
+.example {
+  text-align: center;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}
+
 /* #components-layout-demo-fixed .logo {
   width: 120px;
   height: 31px;

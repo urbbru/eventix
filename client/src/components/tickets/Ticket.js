@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Col, Button, Card, List, Avatar, Icon, Tooltip } from 'antd'
 import CreateComment from '../comments/CreateComment'
 import {fraudCalculator, giveColor} from '../../constants'
@@ -7,10 +7,10 @@ import {fraudCalculator, giveColor} from '../../constants'
 export default function Ticket(props) {
     const IconText = ({ type, text }) => {
         if(type === "check"){ 
-        return  <span className={giveColor(fraudCalculator(props.ticket, props.tickets, props.event))}>
+        return  <span className={giveColor(fraudCalculator(props.ticket, props.allUserTickets, props.event))}>
                     <Tooltip title="Chance of fraud">
                     <Icon type={type} style={{ marginRight: 8 }} />
-                    {fraudCalculator(props.ticket, props.tickets, props.event)}
+                    {fraudCalculator(props.ticket, props.allUserTickets, props.event)}
                     </Tooltip>
                 </span>
         } else {
@@ -18,6 +18,14 @@ export default function Ticket(props) {
                         <Icon type={type} style={{ marginRight: 8 }} />
                         {text}
                     </span>
+        }
+    }
+    const showEditEventBtn = () => {
+        if((props.authenticated && props.currentUser.info.id === props.ticket.user.id) 
+            || (props.authenticated && props.currentUser.info.admin)) {
+            return (<Link to={`/tickets/${props.ticket.id}/edit`}>
+                        <Button type="primary" icon="setting" className="back-btn">Edit ticket</Button>
+                    </Link>)
         }
     }
     return (
@@ -30,6 +38,7 @@ export default function Ticket(props) {
                             size="large"
                             footer={`Ticket for the "${props.ticket.event.name}" event`}
                         >
+                        {showEditEventBtn()}
                             <List.Item
                                     key={"Se"}
                                     actions={[<IconText type="check" text="156" />, <IconText type="message" text={props.ticket.comments.length} />]}
@@ -61,7 +70,7 @@ export default function Ticket(props) {
 
                         {props.ticket.comments.map(comment => {
                             return (
-                                <List.Item>
+                                <List.Item key={comment.id}>
                                 <List.Item.Meta
                                 avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                                 title={`Posted by ${comment.user.userName}`}

@@ -1,4 +1,4 @@
-import {JsonController, Get, Post, Put, Body, Param, Authorized, CurrentUser, HttpCode, BadRequestError, NotFoundError} from 'routing-controllers'
+import {JsonController, Get, Post, Put, Delete, Body, Param, Authorized, CurrentUser, HttpCode, BadRequestError, NotFoundError} from 'routing-controllers'
 import Ticket from './entity';
 import Comment from '../comments/entity';
 import User from '../users/entity';
@@ -29,7 +29,7 @@ export default class TicketController {
       @Body() comment: Comment
     ) {
       const ticket = await Ticket.findOne(ticketId)
-      if (!ticket) throw new BadRequestError(`Game does not exist`)
+      if (!ticket) throw new BadRequestError(`Ticket does not exist`)
 
       const entity = await comment.save()
       entity.user = user
@@ -47,6 +47,16 @@ export default class TicketController {
       if(!ticket) throw new NotFoundError('Ticket not found djais')
 
       return Ticket.merge(ticket, update).save()
+    }
+
+    @Delete("/tickets/:id")
+    async deleteEvent(
+      @Param("id") id: number
+    ) {
+        const ticket = await Ticket.findOne(id, {relations: ['comments']})
+        if(!ticket) throw new NotFoundError('Ticket not found djais')
+        
+        return ticket.remove();
     }
 
 }

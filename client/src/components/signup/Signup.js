@@ -1,12 +1,10 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {signup} from '../../actions/users'
 import {connect} from 'react-redux'
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd';
+import { Col, Form, Input, Tooltip, Icon, Button } from 'antd';
+import {Redirect} from 'react-router-dom'
 
 const FormItem = Form.Item;
-const Option = Select.Option;
-const AutoCompleteOption = AutoComplete.Option;
 
 class Signup extends React.Component {
   state = {
@@ -56,6 +54,12 @@ class Signup extends React.Component {
   }
 
   render() {
+    if (this.props.actions.signup === true) return (
+			<Redirect to="/login" />
+    )
+    if (this.props.actions.signup && this.props.actions.signup.hasOwnProperty('error')) return (
+			<Redirect to="/error" />
+    )
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -179,6 +183,6 @@ class Signup extends React.Component {
 
 const WrappedSignup = Form.create()(Signup);
 
-const mapStateToProps = ({events}) => ({events})
+const mapStateToProps = ({actions}) => ({actions})
 
 export default connect(mapStateToProps, {signup})(WrappedSignup)

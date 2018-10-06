@@ -1,12 +1,10 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {connect} from 'react-redux'
 import {loadTicket, updateTicket} from '../../actions/tickets'
-import { Col, Form, Input, InputNumber, Tooltip, Icon, Select, DatePicker, Button, AutoComplete } from 'antd';
+import { Col, Form, Input, InputNumber, Tooltip, Icon, Button } from 'antd';
 import {Redirect} from 'react-router-dom'
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class UpdateTicket extends React.Component {
     componentDidMount() {
@@ -29,7 +27,6 @@ class UpdateTicket extends React.Component {
   }
   
   render() {
-    console.log(this.props)
     const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
@@ -54,29 +51,22 @@ class UpdateTicket extends React.Component {
         },
       },
     }
-    if (!this.props.authenticated || this.props.ticket.user.id !== this.props.currentUser.info.id) return (
+    if (!this.props.authenticated) return (
         <Redirect to="/events" />
+    )
+    if (Object.keys(this.props.ticket).length > 0) {
+      if(this.props.ticket.user.id !== this.props.currentUser.info.id && !this.props.currentUser.info.admin) {
+        return (
+          <Redirect to="/events" />
+        ) 
+      }
+    }
+    if (this.props.actions.ticketUpdate) return (
+      <Redirect to={`/tickets/${this.props.ticket.id}`} />
     )
     return (
       <Col xs={{ span: 22, offset: 1 }}>
       <Form onSubmit={this.handleSubmit}>
-        {/* <FormItem
-          {...formItemLayout}
-          label="Which event is the ticket for?"
-        >
-          {getFieldDecorator('event', { rules: [{ required: true, message: 'Please input the url of your picture!'}]})(
-                <Select
-                showSearch
-                placeholder="Select a event"
-                optionFilterProp="children"
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                    {this.props.events.map(event => {
-                        return <Option value={event.id}>{event.name}</Option>
-                    })}
-                </Select>
-          )}
-        </FormItem> */}
         <FormItem
           {...formItemLayout}
           label="Price"
@@ -134,7 +124,8 @@ const WrappedTicketUpdator = Form.create()(UpdateTicket);
 const mapStateToProps = state => ({
     authenticated: state.currentUser !== null,
     currentUser: state.currentUser,
-    ticket: state.ticket
+    ticket: state.ticket,
+    actions: state.actions
   })
 
 export default connect(mapStateToProps, {loadTicket, updateTicket})(WrappedTicketUpdator)

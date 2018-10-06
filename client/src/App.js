@@ -6,6 +6,7 @@ import Header from './components/layout/Header'
 import HomeContainer from './components/HomeContainer'
 import EventsContainer from './components/events/EventsContainer'
 import CreateEvent from './components/events/CreateEvent'
+import UpdateEvent from './components/events/UpdateEvent'
 import EventContainer from './components/events/EventContainer'
 import CreateTicket from './components/tickets/CreateTicket'
 import UpdateTicket from './components/tickets/UpdateTicket'
@@ -18,9 +19,6 @@ import { Switch, Route } from 'react-router'
 import { Row } from 'antd'
 
 class App extends Component {
-  onChange = (e) => {
-    console.log(e)
-  }
   render() {
     return (
         <Router basename={process.env.PUBLIC_URL}>
@@ -35,6 +33,7 @@ class App extends Component {
                     <Route exact path="/events" component={EventsContainer}/>
                     <Route exact path="/events/create" component={CreateEvent}/>
                     <Route exact path="/events/:id" component={EventContainer}/>
+                    <Route exact path="/events/:id/edit" component={UpdateEvent}/>
                     <Route exact path="/tickets/create" component={CreateTicket}/>
                     <Route exact path="/tickets/:id" component={TicketContainer}/>
                     <Route exact path="/tickets/:id/edit" component={UpdateTicket}/>

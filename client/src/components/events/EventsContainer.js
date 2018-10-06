@@ -1,12 +1,8 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
-import {loadEvents} from '../../actions/events'
+import {loadEvents, deleteEvent} from '../../actions/events'
 import { baseUrl } from '../../constants'
-import { 
-  Row, Col, Button, Select, Form, 
-  Pagination, Switch, Radio, Icon,
-  Card, Avatar
-} from 'antd'
+import { Col, Pagination, Spin, message } from 'antd'
 import Events from './Events'
 
 class EventsContainer extends React.PureComponent {
@@ -18,10 +14,24 @@ class EventsContainer extends React.PureComponent {
   
   componentDidMount() {
     this.props.loadEvents(this.state.skip, this.state.take)
+    if(this.state.totalEvents === 0) {
+      this.loadTotalEvents()
+    }
+  }
 
+  componentDidUpdate() {
+    if(this.props.actions.eventDelete) {
+      this.props.loadEvents(this.state.skip, this.state.take)
+      this.loadTotalEvents()
+      message.success('Event deleted')
+      this.props.actions.eventDelete = null
+    }
+  }
+
+  loadTotalEvents = () => {
     fetch(`${baseUrl}/events`)
-      .then(response => response.json())
-      .then(json => this.setState({totalEvents: json.events.length}))
+        .then(response => response.json())
+        .then(json => this.setState({totalEvents: json.events.length}))
   }
 
   paginate = (page) => {
@@ -29,11 +39,10 @@ class EventsContainer extends React.PureComponent {
   }
   
   render() {
-    console.log(this.state)
-    if(this.props.events.length === 0) return '..Loading'
+    if(this.props.events.length === 0) return (<div className="example"><Spin /></div>)
     return (
       <div>
-        <Events events={this.props.events} authenticated={this.props.authenticated}/>
+        <Events events={this.props.events} deleteEvent={this.props.deleteEvent} authenticated={this.props.authenticated} currentUser={this.props.currentUser} actions={this.props.actions}/>
         <Col xs={{ span: 22, offset: 1 }} className="pagination">
             <Pagination defaultCurrent={1} total={Math.ceil(this.state.totalEvents/9)*10} onChange={this.paginate}/>
         </Col>
@@ -44,8 +53,10 @@ class EventsContainer extends React.PureComponent {
 
 const mapStateToProps = state => ({
   authenticated: state.currentUser !== null,
-  events: state.events
+  currentUser: state.currentUser,
+  events: state.events,
+  actions: state.actions
 })
 
-export default connect(mapStateToProps, {loadEvents})(EventsContainer)
+export default connect(mapStateToProps, {loadEvents, deleteEvent})(EventsContainer)
 

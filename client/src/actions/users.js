@@ -54,13 +54,13 @@ export const login = (email, password) => (dispatch) =>
     	else {
     		console.error(err)
     	}
-    })
+})
 
 export const signup = (username, email, password) => (dispatch) =>
 	request
 		.post(`${baseUrl}/users`)
 		.send({ userName: username, email, password })
-		.then(result => {
+		.then(_ => {
 			dispatch(userSignupSuccess())
 		})
 		.catch(err => {
@@ -70,7 +70,7 @@ export const signup = (username, email, password) => (dispatch) =>
 			else {
 				console.error(err)
 			}
-		})
+})
 
 export const getUsers = () => (dispatch, getState) => {
   const state = getState()

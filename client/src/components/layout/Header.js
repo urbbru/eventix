@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import {connect} from 'react-redux'
 import { Col, Menu, Icon } from 'antd'
 import logo from '../../logo.svg';
-import {isExpired, userId} from '../../jwt'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -22,7 +21,7 @@ class Header extends React.PureComponent {
         } else {
             return (
                 
-                <SubMenu style={{float: 'right'}} title={<span><Icon type="setting" />{this.props.user.info.userName}</span>}>
+                <SubMenu style={{float: 'right'}} title={<span><Icon type="user" />{this.props.user.info.userName}</span>}>
                     <MenuItemGroup title="Actions">
                     <Menu.Item key="createEvent"><Link to={"/events/create"}>Create Event</Link></Menu.Item>
                     <Menu.Item key="createTicket"><Link to={"/tickets/create"}>Create Ticket</Link></Menu.Item>

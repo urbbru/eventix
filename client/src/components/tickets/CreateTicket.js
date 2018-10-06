@@ -1,9 +1,8 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {connect} from 'react-redux'
 import {loadEvents} from '../../actions/events'
 import {createTicket} from '../../actions/tickets'
-import { Col, Form, Input, InputNumber, Tooltip, Icon, Select, DatePicker, Button, AutoComplete } from 'antd';
+import { Col, Form, Input, InputNumber, Tooltip, Icon, Select, Button } from 'antd';
 import {Redirect} from 'react-router-dom'
 
 const moment = require('moment')
@@ -11,9 +10,9 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 class CreateTicket extends React.Component {
-    componentDidMount() {
-        this.props.loadEvents()
-    }
+  componentDidMount() {
+    this.props.loadEvents()
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -57,7 +56,10 @@ class CreateTicket extends React.Component {
       },
     }
     if (!this.props.authenticated) return (
-        <Redirect to="/" />
+      <Redirect to="/" />
+    )
+    if (this.props.actions && this.props.actions.ticket === true) return (
+      <Redirect to={`/tickets/${this.props.ticket.id}`} />
     )
     return (
       <Col xs={{ span: 22, offset: 1 }}>
@@ -66,7 +68,7 @@ class CreateTicket extends React.Component {
           {...formItemLayout}
           label="Which event is the ticket for?"
         >
-          {getFieldDecorator('event', { rules: [{ required: true, message: 'Please input the url of your picture!'}]})(
+          {getFieldDecorator('event', { rules: [{ required: true, message: 'Please input for which event the ticket is!'}]})(
                 <Select
                 showSearch
                 placeholder="Select a event"
@@ -83,7 +85,7 @@ class CreateTicket extends React.Component {
           {...formItemLayout}
           label="Price"
         >
-          {getFieldDecorator('price', { initialValue: 0, rules: [{ required: true, message: 'Please input the url of your picture!'}]})(
+          {getFieldDecorator('price', { initialValue: 1, rules: [{ required: true, message: 'Please input price of your ticket!'}]})(
             <InputNumber min={1} />
           )}
           <span className="ant-form-text"> euros</span>
@@ -94,7 +96,7 @@ class CreateTicket extends React.Component {
         >
           {getFieldDecorator('description', {
             rules: [{
-              required: true, message: 'Please input description of event',
+              required: true, message: 'Please input description of ticket',
             }]
           })(
             <Input />
@@ -105,7 +107,7 @@ class CreateTicket extends React.Component {
           label={(
             <span>
               Picture(url)&nbsp;
-              <Tooltip title="Upload on se to get url">
+              <Tooltip title="Upload on ImgBB to get url">
                 <Icon type="question-circle-o" />
               </Tooltip>
             </span>
@@ -131,7 +133,9 @@ const WrappedTicketCreator = Form.create()(CreateTicket);
 const mapStateToProps = state => ({
     authenticated: state.currentUser !== null,
     currentUser: state.currentUser,
-    events: state.events
+    events: state.events,
+    ticket: state.ticket,
+    actions: state.actions
   })
 
 export default connect(mapStateToProps, {loadEvents, createTicket})(WrappedTicketCreator)

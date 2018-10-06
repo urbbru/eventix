@@ -1,4 +1,4 @@
-import {JsonController, Get, Post, Put, Body, Param, Authorized, CurrentUser, HttpCode, BadRequestError, NotFoundError, QueryParams} from 'routing-controllers'
+import {JsonController, Get, Post, Put, Delete, Body, Param, Authorized, CurrentUser, HttpCode, BadRequestError, NotFoundError, QueryParams} from 'routing-controllers'
 import Event from './entity';
 import User from '../users/entity';
 import Ticket from '../tickets/entity';
@@ -61,9 +61,19 @@ export default class EventController {
       @Body() update: Partial<Event>
     ) {
       const event = await Event.findOne(id)
-      if(!event) throw new NotFoundError('Page not found djais')
+      if(!event) throw new NotFoundError('Event not found djais')
 
       return Event.merge(event, update).save()
+    }
+
+    @Delete("/events/:id")
+    async deleteEvent(
+      @Param("id") id: number
+    ) {
+        const event = await Event.findOne(id, {relations: ['tickets']})
+        if(!event) throw new NotFoundError('Event not found djais')
+        
+        return event.remove();
     }
 
 }

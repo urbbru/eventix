@@ -28,7 +28,6 @@ const app = createKoaServer({
         const [ , token ] = header.split(' ')
         return !!(token && verify(token))
       }
-      // ...
       return false
     },
     currentUserChecker: async (action: Action) => {

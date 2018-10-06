@@ -1,12 +1,9 @@
 import * as React from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {connect} from 'react-redux'
-import {createComment} from '../../actions/tickets'
-import { Col, Form, Input, InputNumber, Tooltip, Icon, Select, DatePicker, Button, AutoComplete } from 'antd';
+import { Form, Input, Button } from 'antd';
 
 const moment = require('moment')
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class CreateComment extends React.Component {
 
